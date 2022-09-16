@@ -1,15 +1,15 @@
+from datetime import datetime
+
 import paho.mqtt.client as mqtt
 import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
+from firebase_admin import firestore, credentials
 
-cred = credentials.Certificate("arduino-capstone-firebase-adminsdk-lnsjg-e680b65d57.json")
-firebase_admin.initialize_app(cred,{'databaseURL':'https://arduino-capstone-default-rtdb.asia-southeast1.firebasedatabase.app/'})
-
-soundDB = db.reference()
+cred = credentials.Certificate("sungwonarduino-firebase-adminsdk-py0cm-ec2835c5c8.json")
+firebase_admin.initialize_app(cred)
+# Application Default credentials are automatically created.
+db = firestore.client()
 
 ###########################################
-
 url = "http://127.0.0.1:5000/"
 
 
@@ -30,13 +30,52 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def on_message(client, userdata, msg):
     print(str(msg.payload.decode("utf-8")))
-    url = "http://127.0.0.1:5000"
-    soundDB.update({'sound1': str(msg.payload.decode("utf-8"))})
-    soundDB.update({'sound2': str(msg.payload.decode("utf-8"))})
-    soundDB.update({'sound3': str(msg.payload.decode("utf-8"))})
-    soundDB.update({'sound4': str(msg.payload.decode("utf-8"))})
-    soundDB.update({'sound5': str(msg.payload.decode("utf-8"))})
-    soundDB.update({'sound6': str(msg.payload.decode("utf-8"))})
+
+    now = datetime.now()
+    print(now.strftime('%Y-%m-%d %H:%M:%S'))
+    db.collection('data').document('mat1').set({
+        'value': str(msg.payload.decode("utf-8")),
+        'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "1",
+    })
+    db.collection('data').document('mat2').set({
+        'value': str(msg.payload.decode("utf-8")),
+        'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "2",
+    })
+    db.collection('data').document('mat3').set({
+        'value': str(msg.payload.decode("utf-8")),
+        'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "3",
+    })
+    db.collection('data').document('mat4').set({
+        'value': str(msg.payload.decode("utf-8")),
+        'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "4",
+    })
+    db.collection('data').document('mat5').set({
+        'value': str(msg.payload.decode("utf-8")),
+        'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "5",
+    })
+    db.collection('data').document('mat6').set({
+        'value': str(msg.payload.decode("utf-8")),
+        'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "6",
+    })
+
+    # soundDB.update({'sound1': str(msg.payload.decode("utf-8"))})
+    # soundDB.update({'sound2': str(msg.payload.decode("utf-8"))})
+    # soundDB.update({'sound3': str(msg.payload.decode("utf-8"))})
+    # soundDB.update({'sound4': str(msg.payload.decode("utf-8"))})
+    # soundDB.update({'sound5': str(msg.payload.decode("utf-8"))})
+    # soundDB.update({'sound6': str(msg.payload.decode("utf-8"))})
 
     # r = requests.post(url, data={'id': 'ksg', 'pw': 'password!@#'})
     # print(r.status)
@@ -56,5 +95,3 @@ client.connect('broker.mqttdashboard.com', 1883)
 # common topic 으로 메세지 발행
 client.subscribe('classTopic', 1)
 client.loop_forever()
-
-
