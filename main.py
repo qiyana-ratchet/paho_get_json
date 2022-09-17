@@ -12,6 +12,7 @@ db = firestore.client()
 ###########################################
 url = "http://127.0.0.1:5000/"
 
+
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("connected OK")
@@ -32,29 +33,41 @@ def on_message(client, userdata, msg):
 
     now = datetime.now()
     print(now.strftime('%Y-%m-%d %H:%M:%S'))
-    db.collection('data').document('sensor1').set({
+    db.collection('data').document('mat1').set({
         'value': str(msg.payload.decode("utf-8")),
         'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "1",
     })
-    db.collection('data').document('sensor2').set({
+    db.collection('data').document('mat2').set({
         'value': str(msg.payload.decode("utf-8")),
         'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "2",
     })
-    db.collection('data').document('sensor3').set({
+    db.collection('data').document('mat3').set({
         'value': str(msg.payload.decode("utf-8")),
         'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "3",
     })
-    db.collection('data').document('sensor4').set({
+    db.collection('data').document('mat4').set({
         'value': str(msg.payload.decode("utf-8")),
         'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "4",
     })
-    db.collection('data').document('sensor5').set({
+    db.collection('data').document('mat5').set({
         'value': str(msg.payload.decode("utf-8")),
         'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "5",
     })
-    db.collection('data').document('sensor6').set({
+    db.collection('data').document('mat6').set({
         'value': str(msg.payload.decode("utf-8")),
         'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'TagSnapshot': "1",
+        'SensorTag': "6",
     })
 
     # soundDB.update({'sound1': str(msg.payload.decode("utf-8"))})
@@ -82,5 +95,3 @@ client.connect('broker.mqttdashboard.com', 1883)
 # common topic 으로 메세지 발행
 client.subscribe('classTopic', 1)
 client.loop_forever()
-
-
