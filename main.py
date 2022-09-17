@@ -59,6 +59,11 @@ def on_message(client, userdata, msg):
         'TagSnapshot': "1",
         'SensorTag': "6",
     })
+    current_time = now.strftime('%Y-%m-%d %H:%M:%S')
+    db.collection('timeData').document(current_time).set({
+        'value': str(msg.payload.decode("utf-8")),
+        'time': now.strftime('%Y-%m-%d %H:%M:%S'),
+    })
 
 client = mqtt.Client()  # 새로운 클라이언트 생성
 client.on_connect = on_connect
